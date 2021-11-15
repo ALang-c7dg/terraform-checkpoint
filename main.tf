@@ -88,8 +88,13 @@ resource "aws_instance" "ac-ec2" {
   ami           = "ami-04ad2567c9e3d7893" 
   instance_type = "t2.micro"
   security_groups = ["ac-sec-group"]
+  associate_public_ip_address = true
 
   tags = {
     Name = "ac-ec2"
   }
+}
+
+output "subnet0_id" {
+  value = aws_instance.ac-ec2.public_ip
 }
