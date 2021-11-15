@@ -55,3 +55,30 @@ resource "aws_route_table_association" "one" {
   subnet_id      = aws_subnet.ac-public.id
   route_table_id = aws_route_table.ac-route-table.id
 }
+
+resource "aws_security_group" "ac-sec-group" {
+  name        = "ac-sec-group"
+  description = "anne and casey's security group allowing http"
+  vpc_id      = aws_vpc.ac-vpc.id
+
+  ingress {
+    description      = "HTTP from VPC"
+    from_port        = 80
+    to_port          = 80
+    protocol         = "http"
+    cidr_blocks      = [aws_vpc.ac-vpc.cidr_block]
+  }
+
+  ingress {
+    description      = "SSH from VPC"
+    from_port        = 22
+    to_port          = 22
+    protocol         = "ssh"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
+//deleted egress rule
+  tags = {
+    Name = "ac-sec-group"
+  }
+}
