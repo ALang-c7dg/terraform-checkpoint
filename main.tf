@@ -61,24 +61,9 @@ resource "aws_security_group" "ac-sec-group" {
   description = "allowing http and ssh"
   vpc_id      = aws_vpc.ac-vpc.id
 
-  # ingress {
-  #   description      = "HTTP from VPC"
-  #   from_port        = 80
-  #   to_port          = 80
-  #   protocol         = "http"
-  #   cidr_blocks      = [aws_vpc.ac-vpc.cidr_block]
-  # }
-
-  # ingress {
-  #   description      = "SSH from VPC"
-  #   from_port        = 22
-  #   to_port          = 22
-  #   protocol         = "ssh"
-  #   cidr_blocks      = ["0.0.0.0/0"]
-  # }
 
 //deleted egress rule
-egress {
+  egress {
     from_port        = 0
     to_port          = 0
     protocol         = "-1"
@@ -97,7 +82,7 @@ resource "aws_security_group_rule" "http" {
   from_port         = 80
   to_port           = 80
   protocol          = "tcp"
-  cidr_blocks       = [aws_vpc.ac-vpc.cidr_block]
+  cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = aws_security_group.ac-sec-group.id
 }
 
