@@ -93,12 +93,22 @@ resource "aws_security_group_rule" "http" {
   cidr_blocks       = [aws_vpc.ac-vpc.cidr_block]
   security_group_id = aws_security_group.ac-sec-group.id
 }
+
+resource "aws_security_group_rule" "ssh" {
+  type              = "ingress"
+  from_port         = 22
+  to_port           = 22
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.ac-sec-group.id
+}
 //create EC2
 resource "aws_instance" "ac-ec2" {
   ami           = "ami-04ad2567c9e3d7893" 
   instance_type = "t2.micro"
-  security_groups = ["ac-sec-group"]
+  vpc_security_group_ids = [aws_security_group.ac-sec-group.id]
   associate_public_ip_address = true
+  subnet_id = aws_subnet.ac-public.id
 
   tags = {
     Name = "ac-ec2"
