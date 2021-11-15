@@ -109,12 +109,14 @@ resource "aws_instance" "ac-ec2" {
   vpc_security_group_ids = [aws_security_group.ac-sec-group.id]
   associate_public_ip_address = true
   subnet_id = aws_subnet.ac-public.id
+  key_name = "TerraformCP"
+  user_data = "${file("install.sh")}"
 
   tags = {
     Name = "ac-ec2"
   }
 }
 
-output "subnet0_id" {
+output "ec2_public_ip" {
   value = aws_instance.ac-ec2.public_ip
 }
