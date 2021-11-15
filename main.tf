@@ -82,3 +82,14 @@ resource "aws_security_group" "ac-sec-group" {
     Name = "ac-sec-group"
   }
 }
+
+//create EC2
+resource "aws_instance" "ac-ec2" {
+  ami           = "ami-04ad2567c9e3d7893" 
+  instance_type = "t2.micro"
+  security_groups = ["ac-sec-group"]
+
+  tags = {
+    Name = "ac-ec2"
+  }
+}
