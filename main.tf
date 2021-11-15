@@ -58,24 +58,24 @@ resource "aws_route_table_association" "one" {
 
 resource "aws_security_group" "ac-sec-group" {
   name        = "ac-sec-group"
-  description = "anne and casey's security group allowing http"
+  description = "allowing http and ssh"
   vpc_id      = aws_vpc.ac-vpc.id
 
-  ingress {
-    description      = "HTTP from VPC"
-    from_port        = 80
-    to_port          = 80
-    protocol         = "http"
-    cidr_blocks      = [aws_vpc.ac-vpc.cidr_block]
-  }
+  # ingress {
+  #   description      = "HTTP from VPC"
+  #   from_port        = 80
+  #   to_port          = 80
+  #   protocol         = "http"
+  #   cidr_blocks      = [aws_vpc.ac-vpc.cidr_block]
+  # }
 
-  ingress {
-    description      = "SSH from VPC"
-    from_port        = 22
-    to_port          = 22
-    protocol         = "ssh"
-    cidr_blocks      = ["0.0.0.0/0"]
-  }
+  # ingress {
+  #   description      = "SSH from VPC"
+  #   from_port        = 22
+  #   to_port          = 22
+  #   protocol         = "ssh"
+  #   cidr_blocks      = ["0.0.0.0/0"]
+  # }
 
 //deleted egress rule
   tags = {
@@ -83,6 +83,16 @@ resource "aws_security_group" "ac-sec-group" {
   }
 }
 
+// HTTP: 80, SSH: 22 from 0.0.0.0/0
+
+resource "aws_security_group_rule" "http" {
+  type              = "ingress"
+  from_port         = 80
+  to_port           = 80
+  protocol          = "tcp"
+  cidr_blocks       = [aws_vpc.ac-vpc.cidr_block]
+  security_group_id = aws_security_group.ac-sec-group.id
+}
 //create EC2
 resource "aws_instance" "ac-ec2" {
   ami           = "ami-04ad2567c9e3d7893" 
