@@ -29,3 +29,11 @@ resource "aws_subnet" "ac-public" {
     Name = "ac-public-subnet"
   }
 }
+
+resource "aws_internet_gateway" "gw" {
+  vpc_id = aws_vpc.ac-vpc.id
+
+  tags = {
+    Name = "main"
+  }
+}
